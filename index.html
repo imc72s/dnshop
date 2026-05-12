@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✦ Commission Shop ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Comfortaa:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ─────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg:        #eef5ff;
+  --bg2:       #e4efff;
+  --card:      rgba(255,255,255,0.78);
+  --glass:     rgba(255,255,255,0.55);
+  --border:    rgba(180,215,255,0.6);
+  --border2:   rgba(180,215,255,0.9);
+  --sky:       #a8d4ff;
+  --blue:      #60a8f0;
+  --bluedeep:  #3d84d4;
+  --cream:     #fffcf5;
+  --pink:      #ffb8d4;
+  --text:      #365880;
+  --textmid:   #6b90b8;
+  --textlight: #a0bdd8;
+  --nor-c:     #3aaa6a;  --nor-bg:     #e6faf2; --nor-br:  #82d4aa;
+  --sale-c:    #c09000;  --sale-bg:    #fffbe6; --sale-br: #f0c830;
+  --off-c:     #cc4444;  --off-bg:     #fff0f0; --off-br:  #f0a0a0;
+  --r:18px; --r-sm:12px; --r-xs:8px;
+  --sh: 0 6px 30px rgba(80,150,230,0.12);
+  --sh2: 0 12px 50px rgba(80,150,230,0.22);
+}
+
+body {
+  font-family:'Mitr', sans-serif;
+  font-weight:400;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:default;
+}
+
+/* ── CUSTOM CURSOR ───────────────────────────────── */
+.cursor-star {
+  position:fixed; pointer-events:none; z-index:9999;
+  width:18px; height:18px;
+  transform:translate(-50%,-50%);
+  opacity:0; transition:opacity 0.2s;
+  font-size:14px; line-height:1;
+  animation:cursorSpin 4s linear infinite;
+}
+@keyframes cursorSpin{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+
+/* ── BG BLOBS ─────────────────────────────────────── */
+.blobs { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.blob {
+  position:absolute; border-radius:50%;
+  filter:blur(60px); opacity:0.35;
+  animation:blobDrift var(--bd,20s) ease-in-out infinite alternate;
+}
+.blob1{ width:500px;height:500px;background:#b8d8ff;top:-120px;left:-100px;--bd:18s; }
+.blob2{ width:420px;height:420px;background:#ffd6ec;top:40%;right:-80px;--bd:22s;animation-delay:-6s; }
+.blob3{ width:360px;height:360px;background:#d0f0ff;bottom:-80px;left:30%;--bd:16s;animation-delay:-3s; }
+.blob4{ width:280px;height:280px;background:#fff0d0;top:60%;left:10%;--bd:24s;animation-delay:-9s; }
+@keyframes blobDrift{
+  from{ transform:translate(0,0) scale(1); }
+  to  { transform:translate(40px,30px) scale(1.08); }
+}
+
+/* ── FLOATING PARTICLES ───────────────────────────── */
+.particles{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+.particle {
+  position:absolute;
+  font-size:var(--ps,12px);
+  opacity:0;
+  animation:particleFloat var(--pd,10s) ease-in-out var(--pdelay,0s) infinite;
+}
+@keyframes particleFloat{
+  0%  { opacity:0; transform:translateY(10px) rotate(0deg) scale(0.6); }
+  15% { opacity:0.7; }
+  85% { opacity:0.4; }
+  100%{ opacity:0; transform:translateY(-90px) rotate(180deg) scale(1.1); }
+}
+
+/* ── WRAP ─────────────────────────────────────────── */
+.wrap { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:0 24px; }
+
+/* ── HEADER ───────────────────────────────────────── */
+header {
+  text-align:center;
+  padding:64px 20px 36px;
+  position:relative;
+}
+.hd-ribbon {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,0.7);
+  border:1.5px solid var(--border2);
+  backdrop-filter:blur(12px);
+  border-radius:999px;
+  padding:6px 20px 6px 14px;
+  font-size:0.72rem;
+  font-family:'Comfortaa', sans-serif;
+  font-weight:700;
+  letter-spacing:0.14em;
+  color:var(--bluedeep);
+  text-transform:uppercase;
+  margin-bottom:20px;
+  animation:popIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
+}
+.hd-ribbon-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--blue);
+  animation:pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot{ 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.5);opacity:0.5;} }
+
+.site-title {
+  font-family:'Comfortaa', sans-serif;
+  font-size:clamp(2.2rem,6vw,3.8rem);
+  font-weight:700;
+  color:var(--bluedeep);
+  line-height:1.1;
+  letter-spacing:-0.01em;
+  animation:popIn 0.75s cubic-bezier(.34,1.56,.64,1) 0.1s both;
+}
+.site-title .accent { 
+  background:linear-gradient(135deg,var(--blue),#7ec8ff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.site-tagline {
+  font-family:'Mitr', sans-serif;
+  font-weight:300;
+  font-size:1rem;
+  color:var(--textmid);
+  margin-top:10px;
+  animation:popIn 0.75s cubic-bezier(.34,1.56,.64,1) 0.2s both;
+}
+.hd-deco {
+  display:flex; justify-content:center; align-items:center; gap:10px;
+  margin-top:22px;
+  animation:popIn 0.75s cubic-bezier(.34,1.56,.64,1) 0.3s both;
+}
+.hd-pill {
+  height:4px; width:32px; border-radius:99px;
+  background:linear-gradient(90deg,var(--sky),var(--blue));
+  animation:pillPulse 2s ease-in-out infinite;
+}
+.hd-pill:nth-child(2){ width:52px; animation-delay:0.15s; }
+.hd-pill:nth-child(3){ width:32px; animation-delay:0.3s; }
+@keyframes pillPulse{ 0%,100%{opacity:0.5;transform:scaleX(1);} 50%{opacity:1;transform:scaleX(1.1);} }
+
+@keyframes popIn{
+  from{opacity:0;transform:translateY(16px) scale(0.95);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+/* ── TABS ─────────────────────────────────────────── */
+.tabs-wrapper {
+  position:sticky; top:0; z-index:100;
+  padding:14px 0 4px;
+  background:linear-gradient(to bottom,var(--bg) 75%,transparent);
+}
+.tabs-track {
+  display:flex; justify-content:center;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(16px);
+  border:1.5px solid var(--border2);
+  border-radius:999px;
+  padding:5px;
+  gap:4px;
+  max-width:520px; margin:0 auto;
+  box-shadow: 0 4px 24px rgba(80,150,230,0.1);
+}
+.tab-btn {
+  flex:1;
+  font-family:'Mitr', sans-serif;
+  font-weight:500;
+  font-size:0.85rem;
+  letter-spacing:0.04em;
+  padding:10px 18px;
+  border:none; border-radius:999px;
+  background:transparent;
+  color:var(--textmid);
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(.34,1.56,.64,1);
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  white-space:nowrap;
+  position:relative;
+  overflow:hidden;
+}
+.tab-btn:hover { color:var(--bluedeep); background:rgba(160,200,255,0.15); }
+.tab-btn.active {
+  background:linear-gradient(135deg,var(--blue),var(--bluedeep));
+  color:#fff;
+  box-shadow:0 4px 18px rgba(60,130,210,0.38);
+  font-weight:600;
+}
+.tab-btn .ti { font-size:1em; transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.tab-btn:hover .ti { transform:scale(1.25) rotate(-8deg); }
+.tab-btn.active .ti { transform:scale(1.1); }
+
+/* ── CONTENT ──────────────────────────────────────── */
+.content { padding:36px 0 100px; }
+.tab-panel { display:none; }
+.tab-panel.active {
+  display:block;
+  animation:panelIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes panelIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* section header */
+.sec-head {
+  display:flex; align-items:center; gap:16px;
+  margin-bottom:30px; padding:0 2px;
+}
+.sec-head-left {
+  display:flex; align-items:center; gap:10px;
+}
+.sec-icon {
+  width:40px; height:40px;
+  background:linear-gradient(135deg,rgba(160,210,255,0.4),rgba(200,230,255,0.4));
+  border:1.5px solid var(--border2);
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem;
+  backdrop-filter:blur(8px);
+}
+.sec-head h2 {
+  font-family:'Comfortaa', sans-serif;
+  font-size:1.35rem; font-weight:700;
+  color:var(--bluedeep);
+}
+.sec-head-line { flex:1; height:1.5px; border-radius:99px;
+  background:linear-gradient(to right,var(--border2),transparent); }
+
+/* ── GRID ─────────────────────────────────────────── */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:20px;
+}
+
+/* ── CARD ─────────────────────────────────────────── */
+.card {
+  background:var(--card);
+  backdrop-filter:blur(16px);
+  border:1.5px solid var(--border2);
+  border-radius:var(--r);
+  overflow:hidden;
+  box-shadow:var(--sh);
+  transition:transform 0.38s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+  animation:cardPop 0.65s cubic-bezier(.34,1.56,.64,1) var(--cd,0s) both;
+  position:relative;
+}
+@keyframes cardPop{
+  from{opacity:0;transform:translateY(36px) scale(0.93);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+.card::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(200,230,255,0.15),rgba(255,255,255,0.05));
+  pointer-events:none;
+}
+.card:hover {
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:var(--sh2);
+}
+.card:hover .c-img img { transform:scale(1.08); }
+.card:hover .c-img .no-img { transform:scale(1.05); }
+
+/* card image */
+.c-img {
+  width:100%; aspect-ratio:1/1;
+  background:linear-gradient(135deg,#ddeeff,#eef6ff);
+  overflow:hidden; position:relative;
+}
+.c-img img {
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform 0.5s ease;
+}
+.c-img .no-img {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; transition:transform 0.4s ease;
+}
+.no-img-icon { font-size:3rem; opacity:0.4; }
+.no-img-text {
+  font-family:'Comfortaa',sans-serif; font-size:0.7rem;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--textlight); opacity:0.8;
+}
+
+/* status pill */
+.s-pill {
+  position:absolute; top:12px; left:12px;
+  font-family:'Mitr',sans-serif; font-weight:500;
+  font-size:0.7rem; letter-spacing:0.06em;
+  text-transform:uppercase; padding:4px 12px;
+  border-radius:999px; backdrop-filter:blur(10px);
+  border:1.5px solid; display:flex; align-items:center; gap:5px;
+}
+.s-pill::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.s-nor   { background:var(--nor-bg);  color:var(--nor-c);  border-color:var(--nor-br); }
+.s-sale  { background:var(--sale-bg); color:var(--sale-c); border-color:var(--sale-br); }
+.s-off   { background:var(--off-bg);  color:var(--off-c);  border-color:var(--off-br); }
+
+/* card body */
+.c-body { padding:18px 18px 20px; }
+.c-tag {
+  font-family:'Comfortaa',sans-serif;
+  font-size:0.65rem; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--blue); margin-bottom:7px; display:block;
+}
+.c-title {
+  font-family:'Comfortaa',sans-serif;
+  font-size:1.05rem; font-weight:700;
+  color:var(--bluedeep); margin-bottom:7px;
+  line-height:1.3;
+}
+.c-desc {
+  font-size:0.88rem; font-weight:300;
+  color:var(--textmid); line-height:1.65;
+  margin-bottom:12px;
+}
+.c-about {
+  font-size:0.8rem; font-weight:300;
+  color:var(--textlight); line-height:1.6;
+  padding:10px 12px;
+  background:rgba(160,210,255,0.1);
+  border:1px solid rgba(160,210,255,0.25);
+  border-radius:var(--r-xs);
+  margin-bottom:14px;
+}
+.c-footer {
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:8px;
+  padding-top:12px;
+  border-top:1px dashed rgba(160,210,255,0.4);
+}
+.c-price {
+  font-family:'Comfortaa',sans-serif;
+  font-size:1.2rem; font-weight:700;
+  background:linear-gradient(135deg,var(--blue),var(--bluedeep));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ── EMPTY STATE ──────────────────────────────────── */
+.empty {
+  grid-column:1/-1;
+  text-align:center; padding:70px 20px;
+  color:var(--textlight);
+}
+.empty-icon { font-size:3.5rem; display:block; margin-bottom:14px; opacity:0.35; }
+.empty-text { font-weight:300; font-size:0.95rem; }
+
+/* ── MUSIC CONTROL ────────────────────────────────── */
+.music-btn {
+  position:fixed; bottom:24px; right:24px; z-index:200;
+  width:46px; height:46px; border-radius:50%;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(16px);
+  border:1.5px solid var(--border2);
+  box-shadow:var(--sh);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem;
+  transition:all 0.3s cubic-bezier(.34,1.56,.64,1);
+  color:var(--bluedeep);
+}
+.music-btn:hover { transform:scale(1.12) rotate(10deg); box-shadow:var(--sh2); }
+.music-btn.playing { animation:musicPulse 2s ease-in-out infinite; }
+@keyframes musicPulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(96,168,240,0.4), var(--sh); }
+  50%{ box-shadow:0 0 0 8px rgba(96,168,240,0), var(--sh); }
+}
+
+/* ── WELCOME DIALOG ───────────────────────────────── */
+.dialog-overlay {
+  position:fixed; inset:0; z-index:1000;
+  background:rgba(200,225,255,0.35);
+  backdrop-filter:blur(18px);
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  animation:overlayIn 0.4s ease both;
+}
+@keyframes overlayIn{ from{opacity:0;} to{opacity:1;} }
+.dialog-overlay.hidden {
+  animation:overlayOut 0.4s ease both;
+  pointer-events:none;
+}
+@keyframes overlayOut{ from{opacity:1;} to{opacity:0;} }
+
+.dialog-box {
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(180,220,255,0.7);
+  border-radius:28px;
+  padding:44px 40px 36px;
+  max-width:400px; width:100%;
+  text-align:center;
+  box-shadow:0 20px 80px rgba(80,150,230,0.25);
+  animation:dialogIn 0.65s cubic-bezier(.34,1.56,.64,1) 0.15s both;
+  position:relative;
+  overflow:hidden;
+}
+.dialog-box::before {
+  content:'';
+  position:absolute; top:-60px; left:-60px;
+  width:200px; height:200px;
+  background:radial-gradient(circle,rgba(160,210,255,0.25),transparent 70%);
+  pointer-events:none;
+}
+.dialog-box::after {
+  content:'';
+  position:absolute; bottom:-40px; right:-40px;
+  width:160px; height:160px;
+  background:radial-gradient(circle,rgba(255,200,230,0.2),transparent 70%);
+  pointer-events:none;
+}
+@keyframes dialogIn{
+  from{opacity:0;transform:scale(0.8) translateY(30px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+
+.dialog-emoji {
+  font-size:3.2rem;
+  display:block; margin-bottom:16px;
+  animation:emojiWave 2s ease-in-out infinite;
+}
+@keyframes emojiWave{
+  0%,100%{transform:rotate(0deg) scale(1);}
+  25%{transform:rotate(-12deg) scale(1.05);}
+  75%{transform:rotate(12deg) scale(1.05);}
+}
+.dialog-title {
+  font-family:'Comfortaa',sans-serif;
+  font-size:1.9rem; font-weight:700;
+  color:var(--bluedeep);
+  margin-bottom:10px;
+  letter-spacing:-0.01em;
+}
+.dialog-sub {
+  font-family:'Mitr',sans-serif; font-weight:300;
+  font-size:1rem; color:var(--textmid);
+  line-height:1.6; margin-bottom:30px;
+}
+.dialog-ok {
+  font-family:'Mitr',sans-serif; font-weight:500;
+  font-size:1rem; letter-spacing:0.04em;
+  padding:14px 48px;
+  background:linear-gradient(135deg,var(--blue),var(--bluedeep));
+  color:#fff; border:none; border-radius:999px;
+  cursor:pointer;
+  box-shadow:0 6px 24px rgba(60,130,210,0.4);
+  transition:all 0.3s cubic-bezier(.34,1.56,.64,1);
+  position:relative; z-index:1;
+}
+.dialog-ok:hover {
+  transform:translateY(-3px) scale(1.04);
+  box-shadow:0 10px 32px rgba(60,130,210,0.5);
+}
+.dialog-ok:active { transform:scale(0.97); }
+
+.dialog-deco {
+  display:flex; justify-content:center; gap:6px; margin-top:22px;
+}
+.dialog-deco-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--sky); opacity:0.5;
+  animation:dotBounce 1.8s ease-in-out infinite;
+}
+.dialog-deco-dot:nth-child(1){ animation-delay:0s; }
+.dialog-deco-dot:nth-child(2){ animation-delay:0.2s; background:var(--blue); }
+.dialog-deco-dot:nth-child(3){ animation-delay:0.4s; }
+@keyframes dotBounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer {
+  position:relative; z-index:1;
+  text-align:center; padding:30px 20px;
+  border-top:1px solid rgba(160,210,255,0.3);
+  color:var(--textlight); font-weight:300; font-size:0.85rem;
+}
+footer span { color:var(--blue); }
+
+/* ── SCROLLBAR ────────────────────────────────────── */
+::-webkit-scrollbar{ width:5px; }
+::-webkit-scrollbar-track{ background:var(--bg2); }
+::-webkit-scrollbar-thumb{ background:var(--sky); border-radius:99px; }
+
+/* ── MOBILE ───────────────────────────────────────── */
+@media(max-width:600px){
+  header{ padding:48px 16px 28px; }
+  .tabs-track{ max-width:100%; }
+  .tab-btn{ padding:9px 12px; font-size:0.78rem; gap:4px; }
+  .tab-btn .tab-label{ display:none; }
+  .tab-btn .ti{ font-size:1.3rem; }
+  .grid{ grid-template-columns:1fr; }
+  .dialog-box{ padding:36px 24px 28px; }
+  .site-title{ font-size:2.1rem; }
+  .music-btn{ bottom:16px; right:16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG BLOBS -->
+<div class="blobs">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+  <div class="blob blob4"></div>
+</div>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- CURSOR STAR -->
+<div class="cursor-star" id="cursorStar">✦</div>
+
+<!-- ════════════════ WELCOME DIALOG ════════════════ -->
+<div class="dialog-overlay" id="welcomeDialog">
+  <div class="dialog-box">
+    <span class="dialog-emoji">✦</span>
+    <div class="dialog-title">Welcome</div>
+    <div class="dialog-sub">คุณสามารถเลือกสินค้าก่อนตัดสินใจซื้อได้!</div>
+    <button class="dialog-ok" id="dialogOkBtn">ไปต่อ</button>
+    <div class="dialog-deco">
+      <div class="dialog-deco-dot"></div>
+      <div class="dialog-deco-dot"></div>
+      <div class="dialog-deco-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ MUSIC BUTTON ════════════════ -->
+    
+<button class="music-btn" id="musicBtn" title="เปิด/ปิดเพลง">🎵</button>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="hd-ribbon">
+      <div class="hd-ribbon-dot"></div>
+      งานจากคนจริงๆไม่มีไอรับประกันด้วยนาม@imc72s
+    </div>
+    <h1 class="site-title">DN<span class="accent">SHOP</span> ˖°</h1>
+    <p class="site-tagline">สามารถนำIDแต่ละแพคไปส่งซื้อได้เลยนะ ♡</p>
+    <div class="hd-deco">
+      <div class="hd-pill"></div>
+      <div class="hd-pill"></div>
+      <div class="hd-pill"></div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs-wrapper">
+    <div class="tabs-track">
+      <button class="tab-btn active" data-tab="pk" onclick="switchTab('pk',this)">
+        <span class="ti">✦ Pack ✦</span><span class="tab-label">Pack</span>
+      </button>
+      <button class="tab-btn" data-tab="atb" onclick="switchTab('atb',this)">
+        <span class="ti">✦ Adoptable ✦</span><span class="tab-label">Adoptable</span>
+      </button>
+      <button class="tab-btn" data-tab="vtm" onclick="switchTab('vtm',this)">
+        <span class="ti">✦ VModel ✦</span><span class="tab-label">VTuber Model</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="tab-panel active" id="panel-pk">
+      <div class="sec-head">
+        <div class="sec-head-left">
+          <div class="sec-icon">1</div>
+          <h2>Pack</h2>
+        </div>
+        <div class="sec-head-line"></div>
+      </div>
+      <div class="grid" id="grid-pk"></div>
+    </div>
+
+    <div class="tab-panel" id="panel-atb">
+      <div class="sec-head">
+        <div class="sec-head-left">
+          <div class="sec-icon">2</div>
+          <h2>Adoptable</h2>
+        </div>
+        <div class="sec-head-line"></div>
+      </div>
+      <div class="grid" id="grid-atb"></div>
+    </div>
+
+    <div class="tab-panel" id="panel-vtm">
+      <div class="sec-head">
+        <div class="sec-head-left">
+          <div class="sec-icon">3</div>
+          <h2>VTuber Model</h2>
+        </div>
+        <div class="sec-head-line"></div>
+      </div>
+      <div class="grid" id="grid-vtm"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>made with love <span>sheap and safe</span> · DnShop © 2025</footer>
+
+<!-- ════════════════════════════════════════════════
+     AUDIO ELEMENT (hidden)
+════════════════════════════════════════════════ -->
+<audio id="bgAudio" loop preload="auto"></audio>
+
+<script>
+/* ══════════════════════════════════════════════════
+   STATUS CONSTANTS
+══════════════════════════════════════════════════ */
+const STATUS = {
+  nor:     { label:'Open',     cls:'s-nor'  },
+  sale:    { label:'On Sale',  cls:'s-sale' },
+  offsale: { label:'Closed',   cls:'s-off'  },
+};
+
+/* ══════════════════════════════════════════════════
+   CARD RENDERER
+══════════════════════════════════════════════════ */
+function renderCard({ tab, imgUrl, title, description, about, price, status, icon }) {
+  const s   = STATUS[status] || STATUS.nor;
+  const grid = document.getElementById('grid-' + tab);
+  const idx  = grid.querySelectorAll('.card').length;
+  const delay = (idx * 0.08) + 's';
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.setProperty('--cd', delay);
+
+  const imgHTML = (imgUrl && imgUrl.trim())
+    ? `<img src="${imgUrl}" alt="${title}" loading="lazy"
+         onerror="this.parentElement.innerHTML='<div class=no-img><div class=no-img-icon>${icon||'🖼️'}</div><div class=no-img-text>no image</div></div>'">`
+    : `<div class="no-img">
+         <div class="no-img-icon">${icon || 'loading..'}</div>
+         <div class="no-img-text">no image</div>
+       </div>`;
+
+  card.innerHTML = `
+    <div class="c-img">
+      ${imgHTML}
+      <div class="s-pill ${s.cls}">${s.label}</div>
+    </div>
+    <div class="c-body">
+      <span class="c-tag">${tab.toUpperCase()}</span>
+      <div class="c-title">${title}</div>
+      ${description ? `<div class="c-desc">${description}</div>` : ''}
+      ${about ? `<div class="c-about">${about}</div>` : ''}
+      <div class="c-footer">
+        <div class="c-price">${price}</div>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+}
+
+/* ══════════════════════════════════════════════════
+   TEMPLATE FUNCTIONS ← ใส่ข้อมูลตรงนี้
+══════════════════════════════════════════════════ */
+
+/**
+ * pack(imgUrl, title, description, about, price, status)
+ * status: "nor" | "sale" | "offsale"
+ */
+function pack(imgUrl, title, description, about, price, status) {
+  renderCard({ tab:'pk', imgUrl, title, description, about, price, status, icon:'📦' });
+}
+
+/**
+ * adoptable(imgUrl, title, description, about, price, status)
+ */
+function adoptable(imgUrl, title, description, about, price, status) {
+  renderCard({ tab:'atb', imgUrl, title, description, about, price, status, icon:'🌸' });
+}
+
+/**
+ * vtubemodel(imgUrl, title, description, about, price, status)
+ */
+function vtubemodel(imgUrl, title, description, about, price, status) {
+  renderCard({ tab:'vtm', imgUrl, title, description, about, price, status, icon:'🎀' });
+}
+
+/* ══════════════════════════════════════════════════
+   ✏️  เพิ่มรายการตรงนี้
+══════════════════════════════════════════════════ */
+
+// ── PACK ──────────────────────────────────────
+
+  
+  
+  
+  
+// ── ADOPTABLE ─────────────────────────────────
+
+  
+  
+  
+
+// ── VTUBER MODEL ──────────────────────────────
+
+  
+  
+  
+/* ══════════════════════════════════════════════════
+   EMPTY STATE CHECK
+══════════════════════════════════════════════════ */
+['pk','atb','vtm'].forEach(tab => {
+  const g = document.getElementById('grid-' + tab);
+  if (!g.children.length) {
+    g.innerHTML = `<div class="empty">
+      <span class="empty-icon">☁️</span>
+      <span class="empty-text">ยังไม่มีรายการในหมวดนี้ค่ะ~</span>
+    </div>`;
+  }
+});
+
+/* ══════════════════════════════════════════════════
+   TAB SWITCH
+══════════════════════════════════════════════════ */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════════
+   BACKGROUND MUSIC SYSTEM
+══════════════════════════════════════════════════ */
+const audio       = document.getElementById('bgAudio');
+const musicBtn    = document.getElementById('musicBtn');
+let   bgmEnabled  = false;   // เปิดหลังกด dialog
+let   userMuted   = false;   // mute จาก music button
+const FADE_STEP   = 0.05;
+const FADE_INTERVAL = 40;    // ms
+
+audio.loop   = true;
+audio.volume = 1;
+
+// ── bgs() ─ ตั้ง base64 หรือ URL ──────────────────
+function bgs(base64 = "") {
+  if (!base64 || base64.trim() === "") return;
+  // รองรับทั้ง raw base64 (mp3) และ data URI
+  if (base64.startsWith('data:')) {
+    audio.src = base64;
+  } else {
+    audio.src = 'data:audio/mpeg;base64,' + base64;
+  }
+}
+
+// เพิ่มเพลงได้ตรงนี้ เช่น:
+// bgs("BASE64_STRING_ของ_MP3");
+// หรือ URL โดยตรง:
+// 
+  audio.src = "https://github.com/imc72s/dnshop/raw/refs/heads/main/bgs).mp3";
+
+// ── fade helpers ──────────────────────────────────
+function fadeIn(target = 1, cb) {
+  clearInterval(audio._fadeTimer);
+  audio._fadeTimer = setInterval(() => {
+    const next = Math.min(audio.volume + FADE_STEP, target);
+    audio.volume = parseFloat(next.toFixed(3));
+    if (audio.volume >= target) { clearInterval(audio._fadeTimer); cb && cb(); }
+  }, FADE_INTERVAL);
+}
+function fadeOut(cb) {
+  clearInterval(audio._fadeTimer);
+  audio._fadeTimer = setInterval(() => {
+    const next = Math.max(audio.volume - FADE_STEP, 0);
+    audio.volume = parseFloat(next.toFixed(3));
+    if (audio.volume <= 0) { clearInterval(audio._fadeTimer); cb && cb(); }
+  }, FADE_INTERVAL);
+}
+
+// ── play / pause control ──────────────────────────
+function startBGM() {
+  if (!audio.src || audio.src === window.location.href) return;
+  audio.volume = 0;
+  audio.play().then(() => {
+    if (!userMuted) fadeIn(1);
+  }).catch(() => {});
+  updateMusicBtn();
+}
+
+function stopBGM(instant = false) {
+  if (instant) { audio.pause(); }
+  else fadeOut(() => audio.pause());
+  updateMusicBtn();
+}
+
+function updateMusicBtn() {
+  const playing = !audio.paused && audio.volume > 0;
+  musicBtn.textContent = playing ? '🎵' : '🔇';
+  musicBtn.classList.toggle('playing', playing);
+}
+
+// ── music button toggle ───────────────────────────
+musicBtn.addEventListener('click', () => {
+  if (!bgmEnabled) return;
+  if (audio.paused) {
+    userMuted = false;
+    startBGM();
+  } else {
+    userMuted = true;
+    stopBGM();
+  }
+});
+
+// ── Page Visibility API ────────────────────────────
+// (tab switch, screen lock, minimize, etc.)
+document.addEventListener('visibilitychange', () => {
+  if (!bgmEnabled || !audio.src) return;
+  if (document.hidden) {
+    fadeOut();
+  } else {
+    if (!userMuted) {
+      if (audio.paused) {
+        audio.volume = 0;
+        audio.play().then(() => fadeIn(1)).catch(() => {});
+      } else {
+        fadeIn(1);
+      }
+    }
+    updateMusicBtn();
+  }
+});
+
+// ── Page focus / blur (window switch) ─────────────
+window.addEventListener('blur', () => {
+  if (!bgmEnabled || userMuted) return;
+  fadeOut();
+});
+window.addEventListener('focus', () => {
+  if (!bgmEnabled || userMuted) return;
+  if (audio.paused) {
+    audio.volume = 0;
+    audio.play().then(() => fadeIn(1)).catch(() => {});
+  } else { fadeIn(1); }
+  updateMusicBtn();
+});
+
+// ── Page close / unload ───────────────────────────
+window.addEventListener('pagehide',      () => { audio.pause(); });
+window.addEventListener('beforeunload',  () => { audio.pause(); });
+
+/* ══════════════════════════════════════════════════
+   WELCOME DIALOG
+══════════════════════════════════════════════════ */
+const dialogOverlay = document.getElementById('welcomeDialog');
+const dialogOkBtn   = document.getElementById('dialogOkBtn');
+
+dialogOkBtn.addEventListener('click', () => {
+  dialogOverlay.classList.add('hidden');
+  setTimeout(() => { dialogOverlay.style.display = 'none'; }, 400);
+  bgmEnabled = true;
+  startBGM();
+});
+
+/* ══════════════════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════════════════ */
+(function spawnParticles() {
+  const container = document.getElementById('particles');
+  const emojis = ['✦','✧','·','˖','⋆','°','♡','˚'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left  = Math.random() * 100 + 'vw';
+    p.style.top   = (30 + Math.random() * 70) + 'vh';
+    p.style.color = ['#a8d4ff','#60a8f0','#ffb8d4','#ffd080','#c0e8ff'][Math.floor(Math.random()*5)];
+    p.style.setProperty('--ps',    (8 + Math.random() * 10) + 'px');
+    p.style.setProperty('--pd',    (7 + Math.random() * 10) + 's');
+    p.style.setProperty('--pdelay',(Math.random() * 12)     + 's');
+    container.appendChild(p);
+  }
+})();
+
+/* ══════════════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════════════ */
+(function initCursor() {
+  const star = document.getElementById('cursorStar');
+  star.style.opacity = '0';
+  document.addEventListener('mousemove', e => {
+    star.style.opacity = '0.55';
+    star.style.left = e.clientX + 'px';
+    star.style.top  = e.clientY + 'px';
+    star.style.color = ['#60a8f0','#3d84d4','#ffb8d4','#a0c8f8'][
+      Math.floor(Date.now()/500) % 4
+    ];
+  });
+  document.addEventListener('mouseleave', () => { star.style.opacity = '0'; });
+})();
+</script>
+</body>
+</html>
